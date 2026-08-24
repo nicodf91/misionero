@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../App';
 import { Link } from 'react-router-dom';
-import { CheckCircle, Truck, Store, CreditCard, AlertCircle, Lock, PenTool } from 'lucide-react';
+import { CheckCircle, Truck, Store, AlertCircle, Info, PenTool } from 'lucide-react';
 
 type DeliveryMethod = 'shipping' | 'pickup';
 
@@ -12,9 +12,6 @@ interface FormData {
   address: string;
   city: string;
   zip: string;
-  cardNumber: string;
-  cardExpiry: string;
-  cardCvc: string;
 }
 
 const Checkout: React.FC = () => {
@@ -28,10 +25,7 @@ const Checkout: React.FC = () => {
     lastname: '',
     address: '',
     city: '',
-    zip: '',
-    cardNumber: '',
-    cardExpiry: '',
-    cardCvc: ''
+    zip: ''
   });
 
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
@@ -57,11 +51,6 @@ const Checkout: React.FC = () => {
       if (!formData.city) { newErrors.city = 'Requerido'; valid = false; }
       if (!formData.zip) { newErrors.zip = 'Requerido'; valid = false; }
     }
-
-    // Payment Validation
-    if (!formData.cardNumber || formData.cardNumber.length < 13) { newErrors.cardNumber = 'Número inválido'; valid = false; }
-    if (!formData.cardExpiry) { newErrors.cardExpiry = 'Requerido'; valid = false; }
-    if (!formData.cardCvc || formData.cardCvc.length < 3) { newErrors.cardCvc = 'Requerido'; valid = false; }
 
     setErrors(newErrors);
     setIsFormValid(valid);
@@ -159,10 +148,9 @@ const Checkout: React.FC = () => {
           <div className="w-20 h-20 bg-misionero-100 rounded-full flex items-center justify-center mx-auto mb-6 text-misionero-900 shadow-sm">
             <CheckCircle size={40} />
           </div>
-          <h1 className="font-serif text-3xl text-misionero-900 mb-4">¡Gracias por tu compra!</h1>
+          <h1 className="font-serif text-3xl text-misionero-900 mb-4">Demostración completada</h1>
           <p className="text-misionero-600 mb-8 leading-relaxed">
-            Tu pedido <span className="font-bold text-misionero-900">#{(Math.random() * 10000).toFixed(0)}</span> ha sido confirmado.
-            <br/>Te enviamos un email a <span className="font-medium text-misionero-800">{formData.email}</span> con los detalles.
+            El flujo terminó en este navegador. No se creó un pedido, no se procesó un pago y no se envió información.
           </p>
           
           <div className="bg-misionero-50 p-6 rounded-xl mb-8 border border-misionero-200">
@@ -249,7 +237,7 @@ const Checkout: React.FC = () => {
                   <p className="text-misionero-700 text-sm mb-1">Av. del Libertador 1234, Buenos Aires</p>
                   <p className="text-misionero-500 text-xs">Lunes a Viernes de 10 a 19hs. Sábados de 10 a 14hs.</p>
                   <div className="mt-4 bg-yellow-50 text-yellow-800 text-xs p-3 rounded border border-yellow-100">
-                    Te avisaremos por email cuando tu pedido esté listo para retirar (aprox. 24hs).
+                    En una integración real, este paso coordinaría la disponibilidad para retiro.
                   </div>
                 </div>
               ) : (
@@ -261,32 +249,20 @@ const Checkout: React.FC = () => {
               )}
             </section>
 
-            {/* 3. Pago */}
+            {/* 3. Alcance de la demo */}
             <section>
               <h2 className="text-sm font-bold uppercase tracking-wider text-misionero-500 mb-4 flex items-center gap-2">
                 <span className="bg-misionero-200 text-misionero-800 w-6 h-6 rounded-full flex items-center justify-center text-xs">3</span>
-                Pago Seguro
+                Alcance de la demo
               </h2>
               
               <div className="bg-white p-6 rounded-xl border border-misionero-200 shadow-sm">
-                <div className="flex items-center justify-between mb-6">
-                  <span className="font-bold text-misionero-900 flex items-center gap-2">
-                    <CreditCard size={20} className="text-misionero-400"/> Tarjeta de Crédito / Débito
-                  </span>
-                  <div className="flex gap-2">
-                    <div className="h-6 w-10 bg-misionero-50 rounded border border-misionero-200"></div>
-                    <div className="h-6 w-10 bg-misionero-50 rounded border border-misionero-200"></div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <FormInput name="cardNumber" placeholder="0000 0000 0000 0000" label="Número de Tarjeta" icon={<CreditCard size={16}/>} />
-                  <FormInput name="cardExpiry" placeholder="MM/AA" label="Vencimiento" half />
-                  <FormInput name="cardCvc" placeholder="123" label="CVC" half icon={<Lock size={16}/>}/>
-                </div>
-                
-                <div className="mt-4 flex items-center gap-2 text-xs text-misionero-500 bg-misionero-50 p-3 rounded">
-                  <Lock size={12} /> Tus datos están encriptados y seguros.
+                <div className="flex items-start gap-3 text-sm text-misionero-700">
+                  <Info size={20} className="mt-0.5 shrink-0 text-misionero-500" />
+                  <p>
+                    Este checkout es una simulación de interfaz. No solicita datos de tarjeta, no envía el formulario y no
+                    tiene pasarela de pago ni backend.
+                  </p>
                 </div>
               </div>
             </section>
@@ -300,7 +276,7 @@ const Checkout: React.FC = () => {
                   : 'bg-misionero-200 text-misionero-400 cursor-not-allowed shadow-none'
                 }`}
             >
-              Pagar ${cartTotal.toLocaleString()}
+              Completar demostración · ${cartTotal.toLocaleString()}
             </button>
 
           </form>
@@ -360,7 +336,7 @@ const Checkout: React.FC = () => {
 
             <div className="mt-6 pt-4 border-t border-misionero-100 text-center">
               <p className="text-xs text-misionero-400 flex items-center justify-center gap-2">
-                <Lock size={12} /> Compra protegida SSL
+                <Info size={12} /> Totales calculados únicamente en el navegador
               </p>
             </div>
           </div>

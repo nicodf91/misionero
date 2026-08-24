@@ -1,5 +1,5 @@
 {
   "name": "MISIONERO 2",
-  "description": "Una experiencia de ecommerce AI-first especializada en mate e infusiones. Actúa como un asesor digital activo que guía, recomienda y personaliza la experiencia de compra basándose en el perfil del usuario.",
+  "description": "Demo frontend de ecommerce para mate e infusiones, con catálogo, carrito, personalización local y un recomendador determinístico basado en reglas.",
   "requestFramePermissions": []
 }

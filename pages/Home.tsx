@@ -10,11 +10,10 @@ const Home: React.FC = () => {
   const [form, setForm] = useState({
     name: '',
     email: '',
-    message: '',
-    newsletter: false
+    message: ''
   });
   const [errors, setErrors] = useState<Partial<Record<keyof typeof form, string>>>({});
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
+  const [status, setStatus] = useState<'idle' | 'success'>('idle');
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
@@ -33,12 +32,8 @@ const Home: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validate()) {
-      setStatus('submitting');
-      // Simulate API call
-      setTimeout(() => {
-        setStatus('success');
-        setForm({ name: '', email: '', message: '', newsletter: false });
-      }, 1500);
+      setStatus('success');
+      setForm({ name: '', email: '', message: '' });
     }
   };
 
@@ -208,13 +203,13 @@ const Home: React.FC = () => {
                  <div className="w-20 h-20 bg-misionero-200 rounded-full flex items-center justify-center mx-auto mb-6 text-misionero-900">
                    <CheckCircle size={40} />
                  </div>
-                 <h3 className="font-serif text-2xl text-misionero-900 mb-4">¡Mensaje enviado!</h3>
-                 <p className="text-misionero-600 mb-6">Gracias por escribirnos. Te vamos a responder a la brevedad.</p>
+                  <h3 className="font-serif text-2xl text-misionero-900 mb-4">Validación completada</h3>
+                  <p className="text-misionero-600 mb-6">La demo no envió ni guardó tus datos. Este estado solo muestra el comportamiento de la interfaz.</p>
                  <button 
                    onClick={() => setStatus('idle')} 
                    className="text-misionero-900 font-bold hover:underline"
                  >
-                   Enviar otro mensaje
+                    Probar nuevamente
                  </button>
                </div>
             ) : (
@@ -283,38 +278,15 @@ const Home: React.FC = () => {
                   )}
                 </div>
 
-                {/* Newsletter Checkbox */}
-                <div className="flex items-start md:items-center gap-3 pt-2">
-                  <div className="relative flex items-center mt-1 md:mt-0">
-                    <input
-                      type="checkbox"
-                      id="newsletter"
-                      name="newsletter"
-                      checked={form.newsletter}
-                      onChange={handleChange}
-                      className="peer h-5 w-5 cursor-pointer appearance-none rounded border border-misionero-300 bg-white checked:bg-misionero-900 checked:border-misionero-900 transition-all"
-                    />
-                    <CheckCircle size={14} className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100" />
-                  </div>
-                  <label htmlFor="newsletter" className="text-sm text-misionero-700 cursor-pointer select-none leading-tight">
-                    Quiero suscribirme al newsletter de El Misionero para recibir novedades.
-                  </label>
-                </div>
-
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  disabled={status === 'submitting'}
-                  className={`w-full py-4 rounded-lg font-bold text-lg text-white shadow-lg transition-all flex items-center justify-center gap-2
-                    ${status === 'submitting' 
-                      ? 'bg-gray-400 cursor-wait' 
-                      : 'bg-misionero-900 hover:bg-misionero-800 hover:shadow-xl active:scale-[0.99]'
-                    }`}
+                  className="w-full py-4 rounded-lg font-bold text-lg text-white shadow-lg transition-all flex items-center justify-center gap-2 bg-misionero-900 hover:bg-misionero-800 hover:shadow-xl active:scale-[0.99]"
                 >
-                  {status === 'submitting' ? 'Enviando...' : (
-                    <>Enviar mensaje <Send size={18} /></>
-                  )}
+                  Validar formulario de demo <Send size={18} />
                 </button>
+
+                <p className="text-center text-xs text-misionero-500">No hay backend: el formulario no transmite ni conserva información.</p>
 
               </form>
             )}
