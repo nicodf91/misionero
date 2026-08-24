@@ -171,7 +171,7 @@ const CartDrawer: React.FC = () => {
               Iniciar Compra <ArrowRight size={18} />
             </button>
             <p className="text-[10px] text-center text-misionero-400 mt-4 flex items-center justify-center gap-1 uppercase tracking-wide font-medium">
-              Compra protegida y segura
+              Carrito local de demostración
             </p>
           </div>
         )}

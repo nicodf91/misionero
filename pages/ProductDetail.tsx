@@ -30,11 +30,12 @@ const ProductDetail: React.FC = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (['image/jpeg', 'image/png', 'image/svg+xml'].includes(file.type)) {
+      if (['image/jpeg', 'image/png'].includes(file.type) && file.size <= 5 * 1024 * 1024) {
         setCustomFile(file);
         setErrors(prev => ({ ...prev, file: undefined }));
       } else {
-        setErrors(prev => ({ ...prev, file: 'Formato no válido. Usá JPG, PNG o SVG.' }));
+        setCustomFile(null);
+        setErrors(prev => ({ ...prev, file: 'Usá una imagen JPG o PNG de hasta 5 MB.' }));
       }
     }
   };
@@ -64,7 +65,7 @@ const ProductDetail: React.FC = () => {
       customization: isCustomizing ? {
         text: customText,
         font: customText ? selectedFontName : undefined,
-        image: customFile ? URL.createObjectURL(customFile) : undefined,
+        image: undefined,
         location: customLocation,
         price: CUSTOMIZATION_PRICE
       } : undefined
@@ -229,7 +230,7 @@ const ProductDetail: React.FC = () => {
                     <div className="relative">
                       <input 
                         type="file" 
-                        accept=".jpg,.png,.svg"
+                        accept="image/jpeg,image/png"
                         onChange={handleFileChange}
                         className="hidden" 
                         id="file-upload"
@@ -238,7 +239,7 @@ const ProductDetail: React.FC = () => {
                         htmlFor="file-upload" 
                         className="flex items-center justify-center gap-2 w-full p-3 bg-white border border-dashed border-misionero-300 rounded-md cursor-pointer hover:bg-misionero-50 text-misionero-600 text-sm transition-colors"
                       >
-                        <Upload size={16} /> {customFile ? customFile.name : 'Subir imagen (JPG, PNG, SVG)'}
+                        <Upload size={16} /> {customFile ? customFile.name : 'Subir imagen (JPG o PNG, hasta 5 MB)'}
                       </label>
                     </div>
                     {errors.file && <p className="text-red-500 text-xs mt-1 flex items-center gap-1"><AlertCircle size={12}/> {errors.file}</p>}
@@ -276,15 +277,15 @@ const ProductDetail: React.FC = () => {
             <div className="flex items-start gap-3">
               <Truck className="text-accent-500 mt-1 flex-shrink-0" size={20} />
               <div>
-                <h4 className="font-bold text-sm text-misionero-900">Envío Rápido</h4>
-                <p className="text-xs text-misionero-500">Despachamos en 24hs {isCustomizing && '(+48hs grabado)'}</p>
+                <h4 className="font-bold text-sm text-misionero-900">Entrega simulada</h4>
+                <p className="text-xs text-misionero-500">La interfaz modela retiro o envío sin procesarlos</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <ShieldCheck className="text-accent-500 mt-1 flex-shrink-0" size={20} />
               <div>
-                <h4 className="font-bold text-sm text-misionero-900">Garantía Total</h4>
-                <p className="text-xs text-misionero-500">30 días de cambio directo</p>
+                <h4 className="font-bold text-sm text-misionero-900">Sin cobro</h4>
+                <p className="text-xs text-misionero-500">Nunca se solicitan datos de tarjeta</p>
               </div>
             </div>
           </div>
